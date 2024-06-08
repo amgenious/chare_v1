@@ -1,6 +1,6 @@
 'use client'
 import Addfilesforms from "@/components/dashboard/addfilesforms";
-import { Clapperboard, Folder, Image, Music } from "lucide-react"
+import { Clapperboard, Folder, Image, Music, Users } from "lucide-react"
 
 import {
   Card,
@@ -24,8 +24,11 @@ const  DashboardPage = ()=> {
   const [video, setVideo] = useState([]);
   const [document, setDocument] = useState([]);
   const [sound, setSound] = useState([]);
+  const [group, setGroup] = useState([]);
   const [userid, setUserid] = useState("");
+  const [useremail, setUserEmail] = useState("")
   const colRef = collection(db, "products");
+  const colRef1 = collection(db, "groups");
   const router = useRouter();
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -34,6 +37,8 @@ const  DashboardPage = ()=> {
       } else {
         const Userid = user.uid;
         setUserid(Userid);
+        const UserEmail = user.email;
+        setUserEmail(UserEmail!);
         const q1 = query(
           colRef,
           where("category", "==", "picture"),
@@ -52,6 +57,10 @@ const  DashboardPage = ()=> {
         const q4 = query(
           colRef,
           where("category", "==", "sound"),
+          where("userid", "==", Userid)
+        );
+        const q5 = query(
+          colRef1,
           where("userid", "==", Userid)
         );
         const unsubscribeSnapshot = onSnapshot(q1, (snapShot) => {
@@ -81,6 +90,13 @@ const  DashboardPage = ()=> {
             list.push({ id: doc.id, ...doc.data() });
           });
           setSound(list.length);
+        });
+        const unsubscribeSnapshot4 = onSnapshot(q5, (snapShot) => {
+          let list:any = [];
+          snapShot.docs.forEach((doc) => {
+            list.push({ id: doc.id, ...doc.data() });
+          });
+          setGroup(list.length);
         });
 
         return () => {
@@ -139,6 +155,15 @@ const  DashboardPage = ()=> {
       </CardHeader>
       <CardContent>
         <div className="text-2xl font-bold text-left">{picture}</div>
+      </CardContent>
+    </Card>
+    <Card className="p-2 hover:bg-zinc-900">
+      <CardHeader className="flex flex-row items-center justify-between gap-3 space-y-0 pb-2">
+        <CardTitle className="text-sm font-medium">Groups Created</CardTitle>
+        <Users className="h-5 w-5 text-muted-foreground" />
+      </CardHeader>
+      <CardContent>
+        <div className="text-2xl font-bold text-left">{group}</div>
       </CardContent>
     </Card>
             </div>
