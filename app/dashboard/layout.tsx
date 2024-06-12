@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/dashboard/navbar";
 import SideBar from "@/components/dashboard/sidebar";
+import { Toaster } from "@/components/ui/toaster";
 
  
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -8,6 +9,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <SideBar />
       <div className="flex flex-col">
         <Navbar />
+        <Toaster />
         {children}
         </div>
     </div>

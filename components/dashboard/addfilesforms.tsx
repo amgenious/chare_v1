@@ -1,5 +1,5 @@
 import React from 'react'
-import { Upload } from 'lucide-react';
+import { Loader, Upload } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -18,7 +18,9 @@ import { onAuthStateChanged } from "firebase/auth";
 import { useRouter } from "next/navigation";
 import { uploadFile, getFile } from "../util/storage";
 import { Label } from '../ui/label';
+import { useToast } from './../../components/ui/use-toast'
 const Addfilesforms = () => {
+  const {toast} = useToast()
   const router = useRouter();
   const [selectedFile, setSelectedFile] = useState();
   const [uploaded, setUploaded] = useState("");
@@ -27,6 +29,7 @@ const Addfilesforms = () => {
   const [userid, setUserid] = useState("");
   const [filename, setFileName] = useState("");
   const [loading, setLoading] = useState(false);
+  const [sending, setSending] = useState(false);
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -55,7 +58,7 @@ const Addfilesforms = () => {
 
   const handleData = async (e:any) => {
     e.preventDefault();
-    
+    setSending(true);
     try {
       await addDoc(collection(db, "products"), {
         document: documentid,
@@ -64,10 +67,15 @@ const Addfilesforms = () => {
         filename: filename,
         timeStamps: serverTimestamp(),
       });
-      alert("Document sent successfully");
+      toast(
+        {
+          title:"Document uploaded successfully",
+        }
+      )
+      setSending(false)
     } catch (error) {
-      console.log(error);
       alert(error);
+      setSending(false)
     }
   };
 
@@ -116,7 +124,18 @@ const Addfilesforms = () => {
         </select>
         </div>
       <DialogFooter>
-      <Button>Upload file</Button>
+      <Button>{
+        sending? (
+          <>
+          <p>Uploading document</p>
+          <Loader size={20} className="animate-spin ml-2" />
+          </>
+        ):(
+          "Upload file"
+        )
+      
+      
+      }</Button>
       </DialogFooter>
           </>): (
           <p className="mb-3 text-blue-600 text-xs"></p>
