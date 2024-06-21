@@ -70,12 +70,12 @@ const LoginForm =()=> {
           <Input id="password" type="password" required onChange={e=>setPassword(e.target.value)}/>
           </div>
           <div className="grid gap-2">
-            <div className="flex items-center">
+            {/* <div className="flex items-center">
               
               <Link href="/auth/forgotpassword" className="ml-auto inline-block text-sm underline">
                 Forgot your password?
               </Link>
-            </div>
+            </div> */}
            
           </div>
           <Button type="submit" className="w-full">

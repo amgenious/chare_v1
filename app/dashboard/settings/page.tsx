@@ -10,7 +10,10 @@ const SettingsPage = () => {
         className="flex flex-1 p-3 rounded-lg border shadow-sm"
         x-chunk="dashboard-02-chunk-1"
       >
-        
+        <div>
+        <p>Content coming soon</p>
+        <p>Functionalities of the groups coming pretty soon</p>
+        </div>
       </div>
     </main>
   )

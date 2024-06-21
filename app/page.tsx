@@ -25,6 +25,9 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen bg-black flex-col items-center justify-center">
+      <div className="absolute top-0 p-2 bg-gray-700 w-full text-center">
+        <p>This is a personal project. Not liable for data loss</p>
+      </div>
      <TypewriterEffect className="text-2xl"  words={words}/>
      <div className="pt-10">
       <Link  href='/dashboard'>
